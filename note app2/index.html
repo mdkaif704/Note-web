@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Notes — Local-first (FS Access)</title>
+  <meta name="theme-color" content="#0ea5e9" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-screen w-screen bg-slate-50 text-slate-800">
+  <div class="h-full w-full flex overflow-hidden">
+    <button id="toggleSidebar" class="lg:hidden fixed top-3 left-3 z-30 rounded-md bg-white/90 border border-slate-200 px-3 py-2 text-sm shadow">
+      ☰
+    </button>
+
+    <div id="backdrop" class="hidden fixed inset-0 z-20 bg-black/30 lg:hidden"></div>
+
+    <aside id="sidebar" class="fixed z-30 inset-y-0 left-0 w-80 max-w-[80vw] transform -translate-x-full lg:translate-x-0 transition-transform bg-white border-r border-slate-200 flex flex-col">
+      <div class="p-4 border-b border-slate-200">
+        <div class="flex items-center gap-2">
+          <div class="h-9 w-9 rounded-lg bg-brand-500 text-white grid place-items-center text-lg">N</div>
+          <div>
+            <h1 class="text-lg font-semibold">Notes</h1>
+            <p id="wsStatus" class="text-xs text-slate-500">No folder selected</p>
+          </div>
+        </div>
+        <div class="mt-3 flex gap-2">
+          <button id="btnPickFolder" class="flex-1 rounded-md bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-3 py-2">
+            Pick Folder
+          </button>
+          <button id="btnNewNote" class="flex-1 rounded-md bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium px-3 py-2">
+            New Note
+          </button>
+        </div>
+        <div class="mt-3">
+          <input id="search" type="text" placeholder="Search notes…" class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"/>
+        </div>
+        <div class="mt-3 flex items-center justify-between">
+          <label class="inline-flex items-center gap-2 text-sm">
+            <input id="selectAll" type="checkbox" class="h-4 w-4" />
+            <span>Select all</span>
+          </label>
+          <button id="btnDeleteSelected" class="text-sm text-red-600 hover:text-red-700 disabled:opacity-40" disabled>Delete selected</button>
+        </div>
+      </div>
+
+      <div id="noteList" class="flex-1 overflow-y-auto">
+      </div>
+
+      <div class="p-3 border-t border-slate-200 text-xs text-slate-500">
+        Local-first. No cloud. Works offline.
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col">
+      <div class="h-14 border-b border-slate-200 bg-white px-3 lg:px-5 flex items-center gap-2">
+        <button id="btnSave" class="rounded-md bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium px-3 py-2">Save</button>
+        <button id="btnSaveAs" class="rounded-md bg-white border border-slate-300 hover:bg-slate-100 text-sm font-medium px-3 py-2">Save As</button>
+        <button id="btnDelete" class="rounded-md bg-white border border-red-300 text-red-600 hover:bg-red-50 text-sm font-medium px-3 py-2">Delete</button>
+        <div class="ml-auto text-xs text-slate-500">
+          <span id="saveStatus">No note selected</span>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-auto">
+        <div class="max-w-3xl mx-auto p-4 lg:p-8">
+          <input id="titleInput" type="text" placeholder="Title" class="w-full text-2xl lg:text-3xl font-semibold bg-transparent outline-none placeholder:text-slate-400" />
+          <textarea id="contentInput" placeholder="Start typing…"
+            class="mt-4 w-full min-h-[60vh] lg:min-h-[70vh] resize-y rounded-md bg-white border border-slate-200 p-4 outline-none focus:ring-2 focus:ring-brand-500"></textarea>
+
+          <div class="mt-2 text-xs text-slate-500 flex items-center justify-between">
+            <span id="metaInfo">—</span>
+            <span>Autosave with debounce</span>
+          </div>
+
+          <div id="emptyState" class="hidden mt-12 text-center text-slate-500">
+            <p class="text-lg">Pick a folder or create a note to get started.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
